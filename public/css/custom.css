@@ -404,3 +404,10 @@
 .customer-field:hover {
     background-color: #5290e9;
 }
+
+#VariationAlert {
+    padding: 5px 15px !important;
+    margin: 0px !important;
+    color: red !important;
+    display: none;
+}

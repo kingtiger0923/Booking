@@ -69,21 +69,67 @@ $(".ride-button").click(function() {
     $("#form-data-ride").val($(this).val());
 });
 
+function GetCustomerIndexFormId(id) {
+    for (var i = 0; i < CustomerData.length; i++) {
+        if (CustomerData[i].id == id) return i;
+    }
+    return 0;
+}
+
 $(".src-address").click(function() {
     $(".src-address").removeClass("src-address-selected");
     $(this).addClass("src-address-selected");
+    var text = $(this).val();
+    var customerId = GetCustomerIndexFormId(
+        $("#form-data-customer-name").val()
+    );
+    if (text == "Home" && customerId != "") {
+        $("#src-address").val(CustomerData[customerId].home_address);
+        $("#form-data-src-address").val(CustomerData[customerId].home_address);
+    } else if (text == "Office" && customerId != "") {
+        $("#src-address").val(CustomerData[customerId].office_address);
+        $("#form-data-src-address").val(
+            CustomerData[customerId].office_address
+        );
+    } else if (text == "DFW") {
+        $("#src-address").val("DFW International Airport (DFW)");
+        $("#form-data-src-address").val("DFW International Airport (DFW)");
+    } else if (text == "DAL") {
+        $("#src-address").val("Dallas Love Field Airport (DAL)");
+        $("#form-data-src-address").val("Dallas Love Field Airport (DAL)");
+    }
     $("#form-data-src-address-t").val($(this).val());
 });
 
 $(".dst-address").click(function() {
     $(".dst-address").removeClass("dst-address-selected");
     $(this).addClass("dst-address-selected");
+    var text = $(this).val();
+    var customerId = GetCustomerIndexFormId(
+        $("#form-data-customer-name").val()
+    );
+    if (text == "Home" && customerId != "") {
+        $("#dst-address").val(CustomerData[customerId].home_address);
+        $("#form-data-dst-address").val(CustomerData[customerId].home_address);
+    } else if (text == "Office" && customerId != "") {
+        $("#dst-address").val(CustomerData[customerId].office_address);
+        $("#form-data-dst-address").val(
+            CustomerData[customerId].office_address
+        );
+    } else if (text == "DFW") {
+        $("#dst-address").val("DFW International Airport (DFW)");
+        $("#form-data-dst-address").val("DFW International Airport (DFW)");
+    } else if (text == "DAL") {
+        $("#dst-address").val("Dallas Love Field Airport (DAL)");
+        $("#form-data-dst-address").val("Dallas Love Field Airport (DAL)");
+    }
     $("#form-data-dst-address-t").val($(this).val());
 });
 
 $(".vehicle-cell").click(function() {
     $(".vehicle-cell").removeClass("vehicle-selected");
     $(this).addClass("vehicle-selected");
+    $("#form-data-vehicle").val($(this).attr("idinfo"));
 });
 
 $(".time-cell").click(function() {
@@ -173,7 +219,20 @@ function backToBooking() {
 function CustomerSelected(id, name, home, office) {
     $("#customer").val(name);
     $("#form-data-customer-name").val(id);
-    $("#src-address").val(home);
     var modal = document.getElementById("myModal");
     modal.style.display = "none";
 }
+
+$("#bookingForm").submit(function() {
+    var ele = $("#bookingForm :input[required]");
+    for (var i = 0; i < ele.length; i++) {
+        if (ele[i].value == "") {
+            $("#VariationAlert").css("display", "block");
+            setTimeout(function() {
+                $("#VariationAlert").fadeOut("slow", function() {});
+            }, 2000);
+            return false;
+        }
+    }
+    return true;
+});

@@ -160,7 +160,7 @@
 {{-- Source Address Pick --}}
 <div class="px-4 pt-5 row">
   <div class="col-md-12">
-    <input class="border-none background-white-50 outline-none customInputWidth" id="autocomplete" name="address" placeholder="Pick up address" onfocus="geolocate();"/>
+    <input class="border-none background-white-50 outline-none customInputWidth" id="src-address" name="address" placeholder="Pick up address" onfocus="geolocate();"/>
     <label for="address">
       <span><i class="fa fa-map-marker"></i></span>
     </label>
@@ -185,7 +185,7 @@
 {{-- Destination Address Pick --}}
 <div class="px-4 pt-5 row">
   <div class="col-md-12">
-    <input class="border-none background-white-50 outline-none customInputWidth" id="dst-address" name="address" placeholder="Destination address" oninput="DestAddressChanged(this);"/>
+    <input class="border-none background-white-50 outline-none customInputWidth" id="dst-address" name="address" placeholder="Destination address" oninput="DestAddressChanged(this);" onfocus="geolocate();"/>
     <label for="address">
       <span><i class="fa fa-map-marker"></i></span>
     </label>
@@ -235,7 +235,7 @@
         @if ($i % 3 == 0) <div class="row"> @endif
           <div class="col-md-4 p-2">
               {{-- One Vehicle --}}
-              <div class="vehicle-cell <?php if($i == 0) echo 'vehicle-selected'; ?>">
+              <div class="vehicle-cell <?php if($i == 0) echo 'vehicle-selected'; ?>" idinfo="{{$vehicles[$i]->id}}">
                 <div class="row py-2"><div class="col-md-12">{{$vehicles[$i]->Type_make}}</div></div>
                 <div class="row py-2"><div class="col-md-12">{{$vehicles[$i]->Type_model}}</div></div>
                 <div class="row py-2">
@@ -277,23 +277,26 @@
     <div class="stroke-line wrapper pb-5"></div>
 </div>
 {{-- Next --}}
-<form action="/confirm-step1" method="POST">
+<form action="/confirm-step1" method="POST" id="bookingForm">
     {{ csrf_field() }}
-    <input type="hidden" name="customer-name" id="form-data-customer-name"/>
-    <input type="hidden" name="date"   id="form-data-date" value="{{$today->format('Y-m-d')}}"/>
-    <input type="hidden" name="hour"   id="form-data-hour" value="01"/>
-    <input type="hidden" name="time-t" id="form-data-time-t" value="am"/>
-    <input type="hidden" name="minute" id="form-data-minute" value="00"/>
-    <input type="hidden" name="ride"   id="form-data-ride" value="Transfer"/>
-    <input type="hidden" name="src-address" id="form-data-src-address" value=""/>
-    <input type="hidden" name="src-address-t" id="form-data-src-address-t" value="Home"/>
-    <input type="hidden" name="dst-address" id="form-data-dst-address" value=""/>
-    <input type="hidden" name="dst-address-t" id="form-data-dst-address-t" value="Home"/>
-    <input type="hidden" name="duration" id="form-data-duration" value="0"/>
-    <input type="hidden" name="vehicle"  id="form-data-vehicle" value="<?php if(count($vehicles)) echo $vehicles[0]->id; ?>"/>
-    <input type="hidden" name="passenger-count" id="form-data-passenger-count" value="1" />
-    <input type="hidden" name="passenger-name" id="form-data-passenger-name" value=""/>
-    <input type="hidden" name="passenger-phone" id="form-data-passenger-phone" value=""/>
+    <input type="hidden" name="customer-name" id="form-data-customer-name" required/>
+    <input type="hidden" name="date"   id="form-data-date" value="{{$today->format('Y-m-d')}}" required/>
+    <input type="hidden" name="hour"   id="form-data-hour" value="01" required/>
+    <input type="hidden" name="time-t" id="form-data-time-t" value="am" required/>
+    <input type="hidden" name="minute" id="form-data-minute" value="00" required/>
+    <input type="hidden" name="ride"   id="form-data-ride" value="Transfer" required/>
+    <input type="hidden" name="src-address" id="form-data-src-address" value="" required/>
+    <input type="hidden" name="src-address-t" id="form-data-src-address-t" value="Home" required/>
+    <input type="hidden" name="dst-address" id="form-data-dst-address" value="" required/>
+    <input type="hidden" name="dst-address-t" id="form-data-dst-address-t" value="Home" required/>
+    <input type="hidden" name="duration" id="form-data-duration" value="0" required/>
+    <input type="hidden" name="vehicle"  id="form-data-vehicle" value="<?php if(count($vehicles)) echo $vehicles[0]->id; ?>" required/>
+    <input type="hidden" name="passenger-count" id="form-data-passenger-count" value="1" required/>
+    <input type="hidden" name="passenger-name" id="form-data-passenger-name" value="" required/>
+    <input type="hidden" name="passenger-phone" id="form-data-passenger-phone" value="" required/>
+    <div id="VariationAlert">
+        Complete The Form Please!
+    </div>
 <div class="px-4 py-5 row">
   <div class="col-md-12">
     <input class="text-center p-4 wrapper selectable-button-selected" style="color:white;" id="next_step" name="next" type="submit" value="Next"/>
@@ -301,39 +304,16 @@
 </div>
 </form>
 <script type="text/javascript" charset="utf-8">
-    var placeSearch, autocomplete;
+    var CustomerData = <?php echo json_encode($customers); ?>;
+    var placeSearch, autocomplete, autocomplete2;
     function initAutocomplete() {
         // Create the autocomplete object, restricting the search predictions to
         // geographical location types.
         autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('autocomplete'), {types: ['geocode']});
+            document.getElementById('src-address'), {types: ['geocode']});
 
-        // Avoid paying for data that you don't need by restricting the set of
-        // place fields that are returned to just the address components.
-        autocomplete.setFields(['address_component']);
-
-        // When the user selects an address from the drop-down, populate the
-        // address fields in the form.
-        autocomplete.addListener('place_changed', fillInAddress);
-    }
-    function fillInAddress() {
-        // Get the place details from the autocomplete object.
-        var place = autocomplete.getPlace();
-
-        for (var component in componentForm) {
-            document.getElementById(component).value = '';
-            document.getElementById(component).disabled = false;
-        }
-
-        // Get each component of the address from the place details,
-        // and then fill-in the corresponding field on the form.
-        for (var i = 0; i < place.address_components.length; i++) {
-            var addressType = place.address_components[i].types[0];
-            if (componentForm[addressType]) {
-            var val = place.address_components[i][componentForm[addressType]];
-            document.getElementById(addressType).value = val;
-            }
-        }
+        autocomplete2 = new google.maps.places.Autocomplete(
+            document.getElementById('dst-address'), {types: ['geocode']});
     }
     function geolocate() {
         if (navigator.geolocation) {
@@ -342,13 +322,13 @@
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
-            var circle = new google.maps.Circle(
-                {center: geolocation, radius: position.coords.accuracy});
-            autocomplete.setBounds(circle.getBounds());
+            var circle = new google.maps.Circle({center: geolocation, radius: position.coords.accuracy});
+            //autocomplete.setBounds(circle.getBounds());
+            //autocomplete2.setBounds(circle.getBounds());
             });
         }
     }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIPWYPVkLKouRjPj7wzEAHpWlnjVzvmxg&libraries=places&callback=initAutocomplete"
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIPWYPVkLKouRjPj7wzEAHpWlnjVzvmxg&sensor=true&libraries=places&callback=initAutocomplete"
         async defer></script>
 @endsection
