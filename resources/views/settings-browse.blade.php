@@ -7,7 +7,8 @@
     <span class="text-center font-weight-bold text-dark maintitle">Settings</span>
   </div>
 </div>
-
+<form action="/setting-save" method="POST">
+    {{csrf_field()}}
 <div class="settings-panel">
   <div class="py-2 row">
     <div class="col-md-12">
@@ -51,4 +52,5 @@
     </div>
   </div>
 </div>
+</form>
 @endsection

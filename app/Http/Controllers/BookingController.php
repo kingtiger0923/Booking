@@ -2,14 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\sendmail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Customers;
+use App\Vehicles;
+
 
 class BookingController extends Controller
 {
     function confirm_step1(Request $request)
     {
         $data = $request->all();
-        return view('booking-step1', compact('data'));
+        //$dis = $this->getDistance($data['src-address'], $data['dst-address']);
+        $data['distance'] = "11.54";
+        error_log(json_encode($data));
+        //Mail::to("iguaranteework@gmail.com")->send(new sendmail());
+        $customer = Customers::where('id', $data['customer-name'])->first();
+        $date = $data['date'].', '.$data['hour'].':'.$data['minute'].' '.$data['time-t'];
+
+        // Calc Price
+        $Calc_Price = 0;
+        $vehicle = Vehicles::where('id', $data['vehicle'])->first();
+        if( $data['ride'] == "Hourly" ) {
+            $Calc_Price = $vehicle->Price_base + $vehicle->Price_hour * ($data['duration'] - 2);
+        } else {
+            $Calc_Price = $vehicle->Price_base + $vehicle->Price_mile * ($data['distance'] - $vehicle->Miles_included);
+        }
+
+        return view('booking-step1', compact('data', 'customer', 'date', 'Calc_Price'));
     }
 
     function DistanceRequest(Request $request)
@@ -18,7 +39,7 @@ class BookingController extends Controller
 
     function getDistance($addressFrom, $addressTo, $unit = '') {
         // Google API key
-        $apiKey = 'AIzaSyAIPWYPVkLKouRjPj7wzEAHpWlnjVzvmxg';
+        $apiKey = 'AIzaSyATQgdZ12KKj6Kty5bJS90dnB9BUNEYnYg';
 
         // Change address format
         $formattedAddrFrom    = str_replace(' ', '+', $addressFrom);
@@ -54,11 +75,11 @@ class BookingController extends Controller
         // Convert unit and return distance
         $unit = strtoupper($unit);
         if($unit == "K"){
-            return round($miles * 1.609344, 2).' km';
+            return round($miles * 1.609344, 2); //.' km'
         }elseif($unit == "M"){
-            return round($miles * 1609.344, 2).' meters';
+            return round($miles * 1609.344, 2); //.' meters'
         }else{
-            return round($miles, 2).' miles';
+            return round($miles, 2); //.' miles'
         }
     }
 }

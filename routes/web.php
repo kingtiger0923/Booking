@@ -15,11 +15,15 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\CheckLogin;
 
-Route::get('/', function () {
-    if( session()->exists('logged_in') && session('logged_in') ) {
-      return redirect('/home');
-    }
-    return view('welcome');
+// Route::get('/', function () {
+//     if( session()->exists('logged_in') && session('logged_in') ) {
+//       return redirect('/home');
+//     }
+//     return view('welcome');
+// });
+
+Route::get('/', function() {
+    return view('index');
 });
 
 Route::namespace('auth')->prefix('auth')->group(function() {

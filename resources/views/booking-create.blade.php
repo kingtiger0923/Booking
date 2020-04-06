@@ -64,8 +64,8 @@
   </div>
 </div>
 <div class="px-4 row">
-  <div class="col-md-12">
-    <input class="border-none background-white-50 outline-none customInputWidth" id="customer" name="customer" placeholder="Type name" readonly required />
+  <div class="col-md-12 autocomplete">
+    <input class="border-none background-white-50 outline-none customInputWidth" id="customer" name="customer" placeholder="Type name" oninput="ShowRecommendation();" required />
     <label for="customer">
       <span onclick="showPopup();"><i class="fa fa-user"></i></span>
     </label>
@@ -79,11 +79,11 @@
     <div class="wrapper p-2"></div>
     <span class="font-weight-bold">Date and Time</span>
     <div class="py-3" id="date_selector">
-      <div class="wrapper py-3 pl-2 font80 calendar-day calendar-day-selected"><?php echo $today->format('Y-m-d'); ?></div>
-      <div class="wrapper py-3 pl-2 font80 calendar-day"><?php echo $tomorrow->format('Y-m-d'); ?></div>
-      <div class="wrapper py-3 pl-2 font80 calendar-day"><?php echo $date3->format('Y-m-d'); ?></div>
-      <div class="wrapper py-3 pl-2 font80 calendar-day"><?php echo $date4->format('Y-m-d'); ?></div>
-      <div class="wrapper py-3 pl-2 font80 calendar-day"><?php echo $date5->format('Y-m-d'); ?></div>
+      <div class="wrapper py-3 pl-2 font80 calendar-day calendar-day-selected">Today, <?php echo $today->format('F, d, Y'); ?></div>
+      <div class="wrapper py-3 pl-2 font80 calendar-day">Tomorrow, <?php echo $tomorrow->format('F, d, Y'); ?></div>
+      <div class="wrapper py-3 pl-2 font80 calendar-day"><?php echo $date3->format('l, F, d, Y'); ?></div>
+      <div class="wrapper py-3 pl-2 font80 calendar-day"><?php echo $date4->format('l, F, d, Y'); ?></div>
+      <div class="wrapper py-3 pl-2 font80 calendar-day"><?php echo $date5->format('l, F, d, Y'); ?></div>
 
       <label class="control-label font80 py-2">Select another date</label>
       <div class='input-group date' id='datetimepicker1'>
@@ -105,11 +105,11 @@
                 for($j = 0; $j < 3; $j++) {
                     $time = ($i * 3) + $j + 1;
                     $string = str_pad( $time, 2, '0', STR_PAD_LEFT);
-                    echo '<div class="col-md-4 px-2 py-2 text-center"><div class="py-4 time-cell ';
+                    echo '<div class="col-md-4 px-0 py-2 text-center"><div class="px-2"><div class="py-4 time-cell ';
                     if( $i == 0 && $j == 0 ) {
                         echo 'time-cell-selected';
                     }
-                    echo '">'.$string.'</div></div>';
+                    echo '">'.$string.'</div></div></div>';
                 }
                 echo '</div>';
             }
@@ -117,10 +117,10 @@
         </div>
         <div class="col-md-2" style="align-self:center;">
             <div class="row">
-            <div class="col-md-12 px-2 py-2 text-center"><div class="py-4 timetype-cell timetype-selected">am</div></div>
+            <div class="col-md-12 px-0 py-2 text-center"><div class="px-2"><div class="py-4 timetype-cell timetype-selected">am</div></div></div>
             </div>
             <div class="row">
-            <div class="col-md-12 px-2 py-2 text-center"><div class="py-4 timetype-cell">pm</div></div>
+            <div class="col-md-12 px-0 py-2 text-center"><div class="px-2"><div class="py-4 timetype-cell">pm</div></div></div>
             </div>
         </div>
         <div class="col-md-5">
@@ -130,11 +130,11 @@
                 for($j = 0; $j < 3; $j++) {
                     $time = ($i * 3) + $j;
                     $string = str_pad( $time * 5, 2, '0', STR_PAD_LEFT);
-                    echo '<div class="col-md-4 px-2 py-2 text-center"><div class="py-4 minute-cell ';
+                    echo '<div class="col-md-4 px-0 py-2 text-center"><div class="px-2"><div class="py-4 minute-cell ';
                     if( $i == 0 && $j == 0 ) {
                         echo 'minute-selected';
                     }
-                    echo '">'.$string.'</div></div>';
+                    echo '">'.$string.'</div></div></div>';
                 }
                 echo '</div>';
             }
@@ -168,17 +168,17 @@
     <div class="stroke-line wrapper"></div>
   </div>
 </div>
-<div class="px-4 py-3 row">
-  <div class="col-md-3">
+<div class="px-5 py-3 row">
+  <div class="col-md-3 px-1">
     <input class="text-center p-2 wrapper src-address src-address-selected" id="start_home" name="start_home" type="button" value="Home"/>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 px-1">
     <input class="text-center p-2 wrapper src-address" id="start_office" name="start_office" type="button" value="Office"/>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 px-1">
     <input class="text-center p-2 wrapper src-address" id="start_dfw" name="start_dfw" type="button" value="DFW"/>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 px-1">
     <input class="text-center p-2 wrapper src-address" id="start_dal" name="start_dal" type="button" value="DAL"/>
   </div>
 </div>
@@ -193,17 +193,17 @@
     <div class="stroke-line wrapper"></div>
   </div>
 </div>
-<div class="px-4 py-3 row">
-  <div class="col-md-3">
+<div class="px-5 py-3 row">
+  <div class="col-md-3 px-1">
     <input class="text-center p-2 wrapper dst-address dst-address-selected" id="dest_home" name="dest_home" type="button" value="Home"/>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 px-1">
     <input class="text-center p-2 wrapper dst-address" id="dest_office" name="dest_office" type="button" value="Office"/>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 px-1">
     <input class="text-center p-2 wrapper dst-address" id="dest_dfw" name="dest_dfw" type="button" value="DFW"/>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 px-1">
     <input class="text-center p-2 wrapper dst-address" id="dest_dal" name="dest_dal" type="button" value="DAL"/>
   </div>
 </div>
@@ -305,6 +305,10 @@
 </form>
 <script type="text/javascript" charset="utf-8">
     var CustomerData = <?php echo json_encode($customers); ?>;
+    var CustomerNameArr = [];
+    for( var i = 0; i < CustomerData.length; i ++ )
+        CustomerNameArr.push(CustomerData[i].firstname + ' ' + CustomerData[i].lastname);
+    // Google Place AutoComplete
     var placeSearch, autocomplete, autocomplete2;
     function initAutocomplete() {
         // Create the autocomplete object, restricting the search predictions to
@@ -329,6 +333,5 @@
         }
     }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIPWYPVkLKouRjPj7wzEAHpWlnjVzvmxg&sensor=true&libraries=places&callback=initAutocomplete"
-        async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATQgdZ12KKj6Kty5bJS90dnB9BUNEYnYg&sensor=true&libraries=places&callback=initAutocomplete" async defer></script>
 @endsection

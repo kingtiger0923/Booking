@@ -22,6 +22,7 @@ class CreateVehiclesTable extends Migration
             $table->float ('Price_mile');
             $table->float ('Price_base');
             $table->float ('Miles_included');
+            $table->integer('used');
             $table->timestamps();
         });
     }
