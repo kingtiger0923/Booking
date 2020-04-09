@@ -32,25 +32,25 @@
     </div>
     <div class="row p-2 back-white">
       <div class="col-md-12">
-        <input class="wrapper border-none background-white outline-none" name="price_hour" placeholder="" value="<?php if(isset($vehicle->Price_hour) == true) echo $vehicle->Price_hour; ?>" required/>
+        <input class="wrapper border-none background-white outline-none" name="price_hour" placeholder="Price Per Hour $" value="<?php if(isset($vehicle->Price_hour) == true) echo $vehicle->Price_hour; ?>" required/>
         <div class="stroke-line wrapper pb-3"></div>
       </div>
     </div>
     <div class="row p-2 back-white">
       <div class="col-md-12">
-        <input class="wrapper border-none background-white outline-none" name="price_mile" placeholder="" value="<?php if(isset($vehicle->Price_mile) == true) echo $vehicle->Price_mile; ?>" required/>
+        <input class="wrapper border-none background-white outline-none" name="price_mile" placeholder="Price Per Mile $" value="<?php if(isset($vehicle->Price_mile) == true) echo $vehicle->Price_mile; ?>" required/>
         <div class="stroke-line wrapper pb-3"></div>
       </div>
     </div>
     <div class="row p-2 back-white">
       <div class="col-md-12">
-        <input class="wrapper border-none background-white outline-none" name="price_base" placeholder="" value="<?php if(isset($vehicle->Price_base) == true)  echo $vehicle->Price_base; ?>" required/>
+        <input class="wrapper border-none background-white outline-none" name="price_base" placeholder="Base Price $" value="<?php if(isset($vehicle->Price_base) == true)  echo $vehicle->Price_base; ?>" required/>
         <div class="stroke-line wrapper pb-3"></div>
       </div>
     </div>
     <div class="row p-2 back-white">
       <div class="col-md-12">
-        <input class="wrapper border-none background-white outline-none" name="miles_included" placeholder="" value="<?php if(isset($vehicle->Miles_included) == true)  echo $vehicle->Miles_included; ?>" required/>
+        <input class="wrapper border-none background-white outline-none" name="miles_included" placeholder="Miles Included" value="<?php if(isset($vehicle->Miles_included) == true)  echo $vehicle->Miles_included; ?>" required/>
         <div class="stroke-line wrapper pb-3"></div>
       </div>
     </div>

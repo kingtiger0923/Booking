@@ -11,7 +11,7 @@
 
 <div class="row py-2">
   <div class="col-md-12">
-    <input class="wrapper border-radius-10 p-3 background-white outline-none" name="search" type="search" placeholder="Search"/>
+    <input class="wrapper border-radius-10 p-3 background-white outline-none" name="search" type="search" placeholder="Search" oninput="SearchForVehicles(this);"/>
   </div>
 </div>
 <div class="row">
@@ -19,7 +19,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="col-md-12 py-2">
   @foreach ($vehicles as $vehicle)
-  <div class="row p-4" id="vehicle_{{$vehicle->id}}">
+  <div class="row p-4 vehicle_block" id="vehicle_{{$vehicle->id}}" vehicle_info="{{$vehicle->Type_make}} {{$vehicle->Type_model}} {{$vehicle->License_plate}}">
     <div class="col-md-12 back-white border-radius-10">
       <div class="row px-3 pt-3">
         <div class="col-md-12"><span style="line-height:150%" class="font120">{{$vehicle->Type_make}}</span><span onclick="deleteVehicle({{$vehicle->id}})" class="float-right font200 color-red">&times;</span></div>

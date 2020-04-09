@@ -15,16 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\CheckLogin;
 
-// Route::get('/', function () {
-//     if( session()->exists('logged_in') && session('logged_in') ) {
-//       return redirect('/home');
-//     }
-//     return view('welcome');
-// });
-
-Route::get('/', function() {
-    return view('index');
+Route::get('/', function () {
+    if( session()->exists('logged_in') && session('logged_in') ) {
+      return redirect('/home');
+    }
+    return view('welcome');
 });
+
+// Route::get('/', function() {
+//     return view('mail.touser');
+// });
 
 Route::namespace('auth')->prefix('auth')->group(function() {
   Route::post('login', 'LoginController@checkUser');
@@ -51,4 +51,11 @@ Route::group(['middleware' => CheckLogin::class], function () {
   Route::post('update-profile', 'ProfileController@update');
 
   Route::post('/confirm-step1', 'BookingController@confirm_step1');
+  Route::post('/confirm-booking-step1', 'BookingController@confirm_booking_step1');
+
+  Route::post('/save_setting', 'MainController@save_Setting');
 });
+
+Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'BookingController@oauth']);
+Route::resource('calendar', 'BookingController');
+Route::get('insertData', 'BookingController@InsertEventToCalendar');

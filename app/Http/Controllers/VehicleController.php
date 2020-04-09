@@ -33,6 +33,7 @@ class VehicleController extends Controller
             $vehicle->Price_mile       = $price_mile;
             $vehicle->Price_base       = $price_base;
             $vehicle->Miles_included   = $mile_included;
+            $vehicle->used             = 0;
             $vehicle->save();
         } else {
             Vehicles::where('id', $id)

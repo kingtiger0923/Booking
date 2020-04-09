@@ -65,7 +65,7 @@
 </div>
 <div class="px-4 row">
   <div class="col-md-12 autocomplete">
-    <input class="border-none background-white-50 outline-none customInputWidth" id="customer" name="customer" placeholder="Type name" oninput="ShowRecommendation();" required />
+    <input class="border-none background-white-50 outline-none customInputWidth" id="customer" name="customer" placeholder="Type name" onchange="CustomerNameChanged(this);" required />
     <label for="customer">
       <span onclick="showPopup();"><i class="fa fa-user"></i></span>
     </label>
@@ -160,7 +160,7 @@
 {{-- Source Address Pick --}}
 <div class="px-4 pt-5 row">
   <div class="col-md-12">
-    <input class="border-none background-white-50 outline-none customInputWidth" id="src-address" name="address" placeholder="Pick up address" onfocus="geolocate();"/>
+    <input class="border-none background-white-50 outline-none customInputWidth" id="src-address" name="address" placeholder="Pick up address" onchange="SourceAddressChanged(this);" onfocus="geolocate();"/>
     <label for="address">
       <span><i class="fa fa-map-marker"></i></span>
     </label>
@@ -185,7 +185,7 @@
 {{-- Destination Address Pick --}}
 <div class="px-4 pt-5 row">
   <div class="col-md-12">
-    <input class="border-none background-white-50 outline-none customInputWidth" id="dst-address" name="address" placeholder="Destination address" oninput="DestAddressChanged(this);" onfocus="geolocate();"/>
+    <input class="border-none background-white-50 outline-none customInputWidth" id="dst-address" name="address" placeholder="Destination address" onchange="DestAddressChanged(this);" onfocus="geolocate();"/>
     <label for="address">
       <span><i class="fa fa-map-marker"></i></span>
     </label>

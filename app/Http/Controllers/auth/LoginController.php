@@ -14,7 +14,7 @@ class LoginController extends Controller
     $user = Users::where('email', $data['email'])->first();
 
     if( $user && $user->password == $data['password'] ) {
-      session(['email' => $data['email'], 'logged_in' => true]);
+      session(['email' => $data['email'], 'logged_in' => true, 'username' => $user->name]);
       return redirect('/home');
     }
 
@@ -22,8 +22,11 @@ class LoginController extends Controller
   }
 
   function Logout() {
+    session()->forget('username');
     session()->forget('email');
     session()->forget('logged_in');
+    session()->forget('access_token');
+
     return redirect('/');
   }
 }

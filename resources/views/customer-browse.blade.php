@@ -11,7 +11,7 @@
 
 <div class="row py-2">
   <div class="col-md-12">
-    <input class="wrapper border-radius-10 p-3 background-white outline-none" name="search" type="search" placeholder="Search"/>
+    <input class="wrapper border-radius-10 p-3 background-white outline-none" name="search" type="search" placeholder="Search" oninput="SearchForCustomers(this);"/>
   </div>
 </div>
 <div class="row">
@@ -19,7 +19,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="col-md-12 py-2">
   @foreach ($customers as $customer)
-  <div class="row p-4" id="customer_{{$customer->id}}">
+  <div class="row p-4 customer_block" id="customer_{{$customer->id}}" cus_name="{{$customer->firstname}} {{$customer->lastname}}">
     <div class="col-md-12 back-white border-radius-10">
       <div class="row px-3 py-2">
         <div class="col-md-12 py-2"><span style="line-height:100%" class="font120">{{$customer->firstname}} {{$customer->lastname}}</span><span onclick="deleteCustomer({{$customer->id}})" class="float-right font200 color-red">&times;</span></div>

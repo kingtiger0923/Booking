@@ -17,14 +17,10 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
 
-function ShowRecommendation() {
-    //
-}
-
 function deleteCustomer(id) {
     $.ajax({
         headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         url: "/delete-customer",
         type: "POST",
@@ -33,14 +29,14 @@ function deleteCustomer(id) {
             if (response == "Success") {
                 $("#customer_" + id).remove();
             }
-        }
+        },
     });
 }
 
 function deleteVehicle(id) {
     $.ajax({
         headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         url: "/delete-vehicle",
         type: "POST",
@@ -49,22 +45,37 @@ function deleteVehicle(id) {
             if (response == "Success") {
                 $("#vehicle_" + id).remove();
             }
-        }
+        },
     });
 }
-
-$("#profile_form").submit(function() {
-    if (1) {
-        //
-    }
-    return false;
-});
 
 $(".calendar-day").click(function() {
     $(".calendar-day").removeClass("calendar-day-selected");
     $("#datetimepicker1").removeClass("dateInput-selected");
     $(this).addClass("calendar-day-selected");
     $("#form-data-date").val($(this).text());
+});
+
+$("#Setting_save").on("click", function() {
+    var smtphost = $("#smtp_host").val();
+    var email_addr = $("#email_addr").val();
+    var smtp_user = $("#smtp_user").val();
+    var smtp_pass = $("#smtp_pass").val();
+
+    $.ajax({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        url: "/save_setting",
+        type: "POST",
+        data: { smtphost, email_addr, smtp_user, smtp_pass },
+        success: function(response) {
+            $("#setting-alert").fadeIn("slow");
+            setTimeout(function() {
+                $("#setting-alert").fadeOut("slow");
+            }, 2000);
+        },
+    });
 });
 
 $(".ride-button").click(function() {
@@ -77,7 +88,7 @@ function GetCustomerIndexFormId(id) {
     for (var i = 0; i < CustomerData.length; i++) {
         if (CustomerData[i].id == id) return i;
     }
-    return 0;
+    return -1;
 }
 
 $(".src-address").click(function() {
@@ -87,10 +98,10 @@ $(".src-address").click(function() {
     var customerId = GetCustomerIndexFormId(
         $("#form-data-customer-name").val()
     );
-    if (text == "Home" && customerId != "") {
+    if (text == "Home" && customerId != -1) {
         $("#src-address").val(CustomerData[customerId].home_address);
         $("#form-data-src-address").val(CustomerData[customerId].home_address);
-    } else if (text == "Office" && customerId != "") {
+    } else if (text == "Office" && customerId != -1) {
         $("#src-address").val(CustomerData[customerId].office_address);
         $("#form-data-src-address").val(
             CustomerData[customerId].office_address
@@ -112,10 +123,12 @@ $(".dst-address").click(function() {
     var customerId = GetCustomerIndexFormId(
         $("#form-data-customer-name").val()
     );
-    if (text == "Home" && customerId != "") {
+    console.log(text, CustomerData[customerId]);
+    $("#dst-address").val(":sdfsdf");
+    if (text == "Home" && customerId != -1) {
         $("#dst-address").val(CustomerData[customerId].home_address);
         $("#form-data-dst-address").val(CustomerData[customerId].home_address);
-    } else if (text == "Office" && customerId != "") {
+    } else if (text == "Office" && customerId != -1) {
         $("#dst-address").val(CustomerData[customerId].office_address);
         $("#form-data-dst-address").val(
             CustomerData[customerId].office_address
@@ -127,7 +140,7 @@ $(".dst-address").click(function() {
         $("#dst-address").val("Dallas Love Field Airport (DAL)");
         $("#form-data-dst-address").val("Dallas Love Field Airport (DAL)");
     }
-    $("#form-data-dst-address-t").val($(this).val());
+    $("#form-data-dst-address-t").val(text);
 });
 
 $(".vehicle-cell").click(function() {
@@ -192,12 +205,25 @@ function DateChanged() {
     $("#form-data-date").val($("#other_date").val());
 }
 
+$("input[name='price_t']").on("change", function() {
+    //alert($(this).val());
+    if ($(this).val() == "Manu") {
+        $("#ManualPrice_Input").show();
+    } else {
+        $("#ManualPrice_Input").hide();
+    }
+});
+
 function SourceAddressChanged(obj) {
-    $("#form-data-src-address").val($(obj).val());
+    setTimeout(function() {
+        $("#form-data-src-address").val($(obj).val());
+    }, 500);
 }
 
 function DestAddressChanged(obj) {
-    $("#form-data-dst-address").val($(obj).val());
+    setTimeout(function() {
+        $("#form-data-dst-address").val($(obj).val());
+    }, 500);
 }
 
 function DurationChanged(obj) {
@@ -241,7 +267,76 @@ $("#bookingForm").submit(function() {
     return true;
 });
 
-function autocomplete(inp, arr) {
+function SearchForVehicles(obj) {
+    var filter = $(obj).val();
+    filter = filter.toUpperCase();
+
+    var filter, i, txtValue, list;
+    list = document.getElementsByClassName("vehicle_block");
+    for (i = 0; i < list.length; i++) {
+        txtValue = list[i].getAttribute("vehicle_info");
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            list[i].style.display = "block";
+        } else {
+            list[i].style.display = "none";
+        }
+    }
+}
+
+$("#profile_form").submit(function() {
+    var Pass1, Pass2;
+    Pass1 = document.getElementById("change_password").value;
+    Pass2 = document.getElementById("confirm_password").value;
+    console.log(Pass1, Pass2, Pass1 == Pass2);
+    if (Pass1 == Pass2) return true;
+    return false;
+});
+
+function PhoneNumberInput(obj) {
+    var txt = $(obj).val();
+    var formated;
+    if (txt.length == 10) formated = formatPhoneNumber(txt);
+    else formated = txt;
+    $(obj).val(formated);
+}
+
+function formatPhoneNumber(phoneNumberString) {
+    var cleaned = ("" + phoneNumberString).replace(/\D/g, "");
+    var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+        return "(" + match[1] + ") " + match[2] + "-" + match[3];
+    }
+    return null;
+}
+
+function SearchForCustomers(obj) {
+    var filter = $(obj).val();
+    filter = filter.toUpperCase();
+    console.log("=filter=" + filter);
+
+    var filter, i, txtValue, list;
+    list = document.getElementsByClassName("customer_block");
+    for (i = 0; i < list.length; i++) {
+        txtValue = list[i].getAttribute("cus_name");
+        console.log(txtValue);
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            list[i].style.display = "block";
+        } else {
+            list[i].style.display = "none";
+        }
+    }
+}
+
+function CustomerNameChanged(obj) {
+    for (var i = 0; i < CustomerData.length; i++) {
+        var name = CustomerData[i].firstname + " " + CustomerData[i].lastname;
+        if (obj.value == name) {
+            $("#form-data-customer-name").val(CustomerData[i].id);
+        }
+    }
+}
+
+function autocompleteCustomer(inp, arr) {
     /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
     var currentFocus;
@@ -287,6 +382,8 @@ function autocomplete(inp, arr) {
                     /*close the list of autocompleted values,
               (or any other open lists of autocompleted values:*/
                     closeAllLists();
+                    /* ------------------------------ */
+                    CustomerNameChanged(inp);
                 });
                 a.appendChild(b);
             }
@@ -316,7 +413,6 @@ function autocomplete(inp, arr) {
                 /*and simulate a click on the "active" item:*/
                 if (x) x[currentFocus].click();
             }
-            console.log(document.getElementById("customer").value);
         }
     });
 
@@ -355,5 +451,10 @@ function autocomplete(inp, arr) {
 }
 
 $(document).ready(function() {
-    autocomplete(document.getElementById("customer"), CustomerNameArr);
+    setTimeout(function() {
+        autocompleteCustomer(
+            document.getElementById("customer"),
+            CustomerNameArr
+        );
+    }, 1000);
 });

@@ -411,3 +411,7 @@
     color: red !important;
     display: none;
 }
+
+.autocomplete-items {
+    margin: 0px 15px;
+}

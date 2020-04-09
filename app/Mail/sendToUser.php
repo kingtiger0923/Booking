@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class sendmail extends Mailable
+class sendToUser extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,9 +16,10 @@ class sendmail extends Mailable
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($data, $vehicle)
     {
         $this->data = $data;
+        $this->vehicle = $vehicle;
     }
 
     /**
@@ -29,6 +30,7 @@ class sendmail extends Mailable
     public function build()
     {
         $data = $this->data;
-        return $this->subject("Booking")->view('mail.tocustomer', compact('data'));
+        $vehicle = $this->vehicle;
+        return $this->subject("New Booking")->view('mail.touser', compact('data', 'vehicle'));
     }
 }
