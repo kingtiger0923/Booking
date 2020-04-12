@@ -31,7 +31,7 @@
     </div>
     <div class="row p-2 back-white">
       <div class="col-md-12">
-        <input class="wrapper border-none background-white outline-none" name="phonenumber" placeholder="Type phone number" value="<?php if(isset($customer->phone) == true) echo $customer->phone; ?>" required/>
+        <input class="wrapper border-none background-white outline-none" name="phonenumber" placeholder="Type phone number" value="<?php if(isset($customer->phone) == true) echo $customer->phone; ?>" oninput="PhoneNumberInput(this);" minlength="10" maxlength="10" required/>
         <div class="stroke-line wrapper pb-3"></div>
       </div>
     </div>

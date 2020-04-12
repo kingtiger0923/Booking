@@ -18,35 +18,40 @@ function closeNav() {
 }
 
 function deleteCustomer(id) {
-    $.ajax({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-        url: "/delete-customer",
-        type: "POST",
-        data: { id },
-        success: function(response) {
-            if (response == "Success") {
-                $("#customer_" + id).remove();
-            }
-        },
-    });
+    //ConfirmDialog_DeleteCustomer("Are you sure?", "Customer Delete", id);
+    if (confirm("Are you sure to delete the Customer?")) {
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            url: "/delete-customer",
+            type: "POST",
+            data: { id },
+            success: function(response) {
+                if (response == "Success") {
+                    $("#customer_" + id).remove();
+                }
+            },
+        });
+    }
 }
 
 function deleteVehicle(id) {
-    $.ajax({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-        url: "/delete-vehicle",
-        type: "POST",
-        data: { id },
-        success: function(response) {
-            if (response == "Success") {
-                $("#vehicle_" + id).remove();
-            }
-        },
-    });
+    if (confirm("Are you sure to delete the Vehicle?")) {
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            url: "/delete-vehicle",
+            type: "POST",
+            data: { id },
+            success: function(response) {
+                if (response == "Success") {
+                    $("#vehicle_" + id).remove();
+                }
+            },
+        });
+    }
 }
 
 $(".calendar-day").click(function() {
@@ -81,6 +86,11 @@ $("#Setting_save").on("click", function() {
 $(".ride-button").click(function() {
     $(".ride-button").removeClass("ride-selected");
     $(this).addClass("ride-selected");
+    if ($(this).val() == "Hourly") {
+        $(".duration_box").fadeIn("slow");
+    } else {
+        $(".duration_box").fadeOut("slow");
+    }
     $("#form-data-ride").val($(this).val());
 });
 
@@ -123,8 +133,7 @@ $(".dst-address").click(function() {
     var customerId = GetCustomerIndexFormId(
         $("#form-data-customer-name").val()
     );
-    console.log(text, CustomerData[customerId]);
-    $("#dst-address").val(":sdfsdf");
+
     if (text == "Home" && customerId != -1) {
         $("#dst-address").val(CustomerData[customerId].home_address);
         $("#form-data-dst-address").val(CustomerData[customerId].home_address);
@@ -239,7 +248,12 @@ function PassengerNameChanged(obj) {
 }
 
 function PassengerPhoneChanged(obj) {
-    $("#form-data-passenger-phone").val($(obj).val());
+    var txt = $(obj).val();
+    var formated;
+    if (txt.length == 10) formated = formatPhoneNumber(txt);
+    else formated = txt;
+    $(obj).val(formated);
+    $("#form-data-passenger-phone").val(formated);
 }
 
 function backToBooking() {
@@ -304,7 +318,7 @@ function formatPhoneNumber(phoneNumberString) {
     var cleaned = ("" + phoneNumberString).replace(/\D/g, "");
     var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
     if (match) {
-        return "(" + match[1] + ") " + match[2] + "-" + match[3];
+        return "+1(" + match[1] + ") " + match[2] + "-" + match[3];
     }
     return null;
 }
@@ -451,10 +465,25 @@ function autocompleteCustomer(inp, arr) {
 }
 
 $(document).ready(function() {
+    var timezone = moment.tz.guess();
+    $.ajax({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        url: "/setTimezone",
+        type: "POST",
+        data: { timezone },
+        success: function(response) {},
+    });
     setTimeout(function() {
-        autocompleteCustomer(
-            document.getElementById("customer"),
-            CustomerNameArr
-        );
+        if (
+            typeof CustomerNameArr === "undefined" ||
+            CustomerNameArr === null
+        ) {} else {
+            autocompleteCustomer(
+                document.getElementById("customer"),
+                CustomerNameArr
+            );
+        }
     }, 1000);
 });

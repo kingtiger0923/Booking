@@ -13,12 +13,18 @@ class ProfileController extends Controller
 
     function update(Request $request) {
         $data = $request->all();
-        error_log(json_encode($data));
-        Users::where('email', $data['pro-email'])->update([
-            'name' => $data['pro-name'],
-            'phone' => $data['pro-phone'],
-            'password' => $data['change-password']
-        ]);
+        if( $data['change-password'] == "" ) {
+            Users::where('email', $data['pro-email'])->update([
+                'name' => $data['pro-name'],
+                'phone' => $data['pro-phone']
+            ]);
+        } else {
+            Users::where('email', $data['pro-email'])->update([
+                'name' => $data['pro-name'],
+                'phone' => $data['pro-phone'],
+                'password' => $data['change-password']
+            ]);
+        }
         return redirect('logout');
     }
 }

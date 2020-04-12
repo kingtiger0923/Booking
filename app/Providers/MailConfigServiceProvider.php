@@ -27,7 +27,8 @@ class MailConfigServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $mail = Settings::where('id', '1')->first();
+        //$mail = Settings::where('id', '1')->first();
+        $mail = DB::table('settings')->first();
         if ($mail)
         {
             $config = array(

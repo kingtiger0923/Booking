@@ -170,7 +170,7 @@
 </div>
 <div class="px-5 py-3 row">
   <div class="col-md-3 px-1">
-    <input class="text-center p-2 wrapper src-address src-address-selected" id="start_home" name="start_home" type="button" value="Home"/>
+    <input class="text-center p-2 wrapper src-address" id="start_home" name="start_home" type="button" value="Home"/>
   </div>
   <div class="col-md-3 px-1">
     <input class="text-center p-2 wrapper src-address" id="start_office" name="start_office" type="button" value="Office"/>
@@ -195,7 +195,7 @@
 </div>
 <div class="px-5 py-3 row">
   <div class="col-md-3 px-1">
-    <input class="text-center p-2 wrapper dst-address dst-address-selected" id="dest_home" name="dest_home" type="button" value="Home"/>
+    <input class="text-center p-2 wrapper dst-address" id="dest_home" name="dest_home" type="button" value="Home"/>
   </div>
   <div class="col-md-3 px-1">
     <input class="text-center p-2 wrapper dst-address" id="dest_office" name="dest_office" type="button" value="Office"/>
@@ -208,7 +208,7 @@
   </div>
 </div>
 {{-- Duration Set --}}
-<div class="px-4 pt-4 row">
+<div class="px-4 pt-4 row duration_box" style="display:none;">
   <div class="col-md-4 py-3">
     <span class="font-weight-bold">Duration</span>
   </div>
@@ -273,7 +273,7 @@
     <div class="stroke-line wrapper pb-5"></div>
 </div>
 <div class="row px-5 pt-3">
-    <input class="wrapper border-none background-white-50 outline-none" name="passenger_phone" placeholder="Passenger's phone#" oninput="PassengerPhoneChanged(this);"/>
+    <input class="wrapper border-none background-white-50 outline-none" name="passenger_phone" placeholder="Passenger's phone#" oninput="PassengerPhoneChanged(this);" minlength="10" maxlength="10"/>
     <div class="stroke-line wrapper pb-5"></div>
 </div>
 {{-- Next --}}
@@ -292,8 +292,8 @@
     <input type="hidden" name="duration" id="form-data-duration" value="0" required/>
     <input type="hidden" name="vehicle"  id="form-data-vehicle" value="<?php if(count($vehicles)) echo $vehicles[0]->id; ?>" required/>
     <input type="hidden" name="passenger-count" id="form-data-passenger-count" value="1" required/>
-    <input type="hidden" name="passenger-name" id="form-data-passenger-name" value="" required/>
-    <input type="hidden" name="passenger-phone" id="form-data-passenger-phone" value="" required/>
+    <input type="hidden" name="passenger-name" id="form-data-passenger-name" value="" />
+    <input type="hidden" name="passenger-phone" id="form-data-passenger-phone" value="" />
     <div id="VariationAlert">
         Complete The Form Please!
     </div>
@@ -315,9 +315,11 @@
         // geographical location types.
         autocomplete = new google.maps.places.Autocomplete(
             document.getElementById('src-address'), {types: ['geocode']});
+        autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
 
         autocomplete2 = new google.maps.places.Autocomplete(
             document.getElementById('dst-address'), {types: ['geocode']});
+        autocomplete2.setFields(['address_components', 'geometry', 'icon', 'name']);
     }
     function geolocate() {
         if (navigator.geolocation) {

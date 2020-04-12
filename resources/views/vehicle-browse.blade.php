@@ -16,7 +16,6 @@
 </div>
 <div class="row">
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="col-md-12 py-2">
   @foreach ($vehicles as $vehicle)
   <div class="row p-4 vehicle_block" id="vehicle_{{$vehicle->id}}" vehicle_info="{{$vehicle->Type_make}} {{$vehicle->Type_model}} {{$vehicle->License_plate}}">

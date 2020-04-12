@@ -226,7 +226,8 @@
 
 .time-cell-selected {
     border: 1px solid #5290e9;
-    color: red;
+    color: white;
+    background-color: #5290e9;
     cursor: pointer;
 }
 
@@ -237,8 +238,9 @@
 
 .timetype-selected {
     border: 1px solid #5290e9;
-    color: red;
+    color: white;
     cursor: pointer;
+    background-color: #5290e9;
 }
 
 .minute-cell {
@@ -248,8 +250,9 @@
 
 .minute-selected {
     border: 1px solid #5290e9;
-    color: red;
+    color: white;
     cursor: pointer;
+    background-color: #5290e9;
 }
 
 .selectable-button-selected {
@@ -272,6 +275,7 @@
     background-color: #5290e9 !important;
     border: #5290e9 1px solid;
     border-radius: 40px;
+    color: white;
     outline: none;
     cursor: pointer;
 }
@@ -288,6 +292,7 @@
     background-color: #5290e9 !important;
     border: #5290e9 1px solid;
     border-radius: 40px;
+    color: white;
     outline: none;
     cursor: pointer;
 }
@@ -304,6 +309,7 @@
     background-color: #5290e9 !important;
     border: #5290e9 1px solid;
     border-radius: 40px;
+    color: white;
     outline: none;
     cursor: pointer;
 }

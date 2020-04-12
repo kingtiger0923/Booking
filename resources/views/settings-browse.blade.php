@@ -1,6 +1,5 @@
 @extends('layout.app')
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content')
 <div class="row py-4">
   <div class="col-md-12">

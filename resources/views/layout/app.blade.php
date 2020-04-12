@@ -13,6 +13,7 @@
     <link href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" rel="stylesheet">
   </head>
   <body>
+<meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="container background-white-50 b-1-dark h5" id="mydiv" style="margin-top: 0px; margin-bottom: 0px;">
       <div id="mySidenav" class="sidenav">
         <div class="innerSidenav" id="innerSidenav">
@@ -27,13 +28,17 @@
         <a href="/logout" class="font140"><i class="fa fa-power-off color-sky pr-3 font140 py-1 minwidth50"></i><span class="font80">Log Out</span></a>
         </div>
       </div>
+      <div class="myContentDiv">
       @yield('content')
+      </div>
     </div>
 
     {{-- <script src="{{url('js/jquery.min.js')}}"></script> --}}
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <script src="{{url('js/bootstrap.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data.js"></script>
     <script src="{{url('js/custom.js')}}"></script>
     {{-- <script src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script> --}}

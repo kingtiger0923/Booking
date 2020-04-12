@@ -26,7 +26,7 @@ class MainController extends Controller
   }
 
   function toCustomers() {
-    $customers = Customers::all();
+    $customers = Customers::orderBy('firstname')->get();
     return view('customer-browse', compact('customers'));
   }
 
@@ -51,5 +51,10 @@ class MainController extends Controller
           'SMTP_password' => $data['smtp_pass']
       ]);
       return "Success";
+  }
+
+  function setTimezone(Request $request) {
+      $data = $request->all();
+      session(['timezone' => $data['timezone']]);
   }
 }

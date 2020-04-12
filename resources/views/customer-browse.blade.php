@@ -16,7 +16,6 @@
 </div>
 <div class="row">
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="col-md-12 py-2">
   @foreach ($customers as $customer)
   <div class="row p-4 customer_block" id="customer_{{$customer->id}}" cus_name="{{$customer->firstname}} {{$customer->lastname}}">
@@ -26,9 +25,9 @@
       </div>
       <div class="row px-3 py-2">
         <div class="col-md-12 back-white py-2">
-          <span><i class="fa fa-phone-square font200 color-sky px-2"></i></span>
-          <span><i class="fas fa-sms font200 color-sky px-2"></i></span>
-          <span><i class="fas fa-envelope-open-text font200 color-sky px-2"></i></span>
+          <span><a href="tel:{{$customer->phone}}"><i class="fa fa-phone-square font200 color-sky px-2"></i></a></span>
+          <span><a href="sms:{{$customer->phone}}"><i class="fas fa-sms font200 color-sky px-2"></i></a></span>
+          <span><a href="mailto:{{$customer->email}}"><i class="fas fa-envelope-open-text font200 color-sky px-2"></i></a></span>
         </div>
       </div>
       <div class="row px-3 py-2">

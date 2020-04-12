@@ -56,6 +56,8 @@ Route::group(['middleware' => CheckLogin::class], function () {
   Route::post('/save_setting', 'MainController@save_Setting');
 });
 
+Route::post('setTimezone', 'MainController@setTimezone');
+
 Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'BookingController@oauth']);
 Route::resource('calendar', 'BookingController');
 Route::get('insertData', 'BookingController@InsertEventToCalendar');
