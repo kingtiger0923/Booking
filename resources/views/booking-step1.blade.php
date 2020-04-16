@@ -85,7 +85,7 @@
         </div>
         <div class="col-md-6">
             <span>$</span>
-            <input  class="border-none outline-none customInputWidth background-white" type="number" name="calc_price" value="{{$Calc_Price}}" readonly/>
+            <input  class="border-none outline-none customInputWidth background-white" name="calc_price" value="{{$Calc_Price}}" readonly/>
         </div>
     </div>
     <div class="wrapper p-2"></div>

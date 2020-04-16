@@ -10,12 +10,14 @@ use App\Customers;
 use App\Vehicles;
 use App\Settings;
 use App\Exceptions;
+use Carbon\Carbon;
 use DateTime;
 use Exception;
 use Google_Client;
 use Google_Service_Calendar;
 use Google_Service_Calendar_Event;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Redirect;
 
 class BookingController extends Controller
@@ -29,13 +31,22 @@ class BookingController extends Controller
             $dis = $this->getDistance($data['src-address'], $data['dst-address']);
             $data['distance'] = $dis;
         } catch(Exception $e) {
-            $data['distance'] = 0;
+            $data['distance'] = "Error";
         }
+
         $customer = Customers::where('id', $data['customer-name'])->first();
+
+        // $carbon = Carbon::parse($data['date']);
+        // error_log(json_encode($carbon));
+        try{
+            $dateobj = new DateTime($data['date']);
+            $data['date'] = $dateobj->format('m-d-Y');
+        } catch(Exception $e) {
+        }
+
         $date = $data['date'].', '.$data['hour'].':'.$data['minute'].' '.$data['time-t'];
 
         // Calc Price
-        error_log($data['vehicle']);
         $Calc_Price = 0;
         $vehicle = Vehicles::where('id', $data['vehicle'])->first();
         if( $data['ride'] == "Hourly" ) {
@@ -43,13 +54,19 @@ class BookingController extends Controller
             if( $Calc_Price < $vehicle->Price_base ) {
               $Calc_Price = $vehicle->Price_base;
             }
+            $Calc_Price = round($Calc_Price, 2);
         } else {
-            $Calc_Price = $vehicle->Price_base + $vehicle->Price_mile * ($data['distance'] - $vehicle->Miles_included);
-            if( $Calc_Price < $vehicle->Price_base ) {
-              $Calc_Price = $vehicle->Price_base;
+            if( $data['distance'] === "Error" ) {
+                $Calc_Price = "Can not get distance!";
+            } else {
+                $Calc_Price = $vehicle->Price_base + $vehicle->Price_mile * ($data['distance'] - $vehicle->Miles_included);
+                if( $Calc_Price < $vehicle->Price_base ) {
+                $Calc_Price = $vehicle->Price_base;
+                }
+                $Calc_Price = round($Calc_Price, 2);
             }
         }
-        $Calc_Price = round($Calc_Price, 2);
+
 
         return view('booking-step1', compact('data', 'customer', 'date', 'Calc_Price'));
     }
@@ -94,7 +111,7 @@ class BookingController extends Controller
         $client = new Google_Client();
         $client->setAuthConfig(__DIR__.'/../../../public/client_secret.json');
         $client->addScope(Google_Service_Calendar::CALENDAR_EVENTS);
-        $client->setAccessType("offline");
+        //$client->setAccessType("offline");
 
         // $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
         // $client->setHttpClient($guzzleClient);
@@ -154,21 +171,28 @@ class BookingController extends Controller
                 } else {
                     $description .= $data['manu_price'].PHP_EOL;
                 }
+                $description .= "Comments:".PHP_EOL;
+                $description .= $data['comments'];
                 $dateArr = array_filter(explode(',', $data['date']), 'strlen');
                 $dateString = "";
                 if( count($dateArr) == 2 ) {
-                    $dateString .= $dateArr[0];
+                    $spliteddate = array_filter(explode('-', $dateArr[0]), 'strlen');
+                    $dateString .= $spliteddate[2];
+                    $dateString .= "-";
+                    $dateString .= $spliteddate[0];
+                    $dateString .= "-";
+                    $dateString .= $spliteddate[1];
                     $dateString .= "T";
                     $split = array_filter(explode(' ', $dateArr[1]), 'strlen');
                     if( $split['2'] == 'am' ) {
                         $split1 = array_filter(explode(':', $split['1']), 'strlen');
-                        $dateString .= ($split1[0] + 12);
+                        $dateString .= $split1[0];
                         $dateString .= ':';
                         $dateString .= $split1[1];
                         $dateString .= ':00';
                     } else {
                         $split1 = array_filter(explode(':', $split['1']), 'strlen');
-                        $dateString .= $split1[0];
+                        $dateString .= ($split1[0] + 12);
                         $dateString .= ':';
                         $dateString .= $split1[1];
                         $dateString .= ':00';
@@ -198,13 +222,13 @@ class BookingController extends Controller
                     $split = array_filter(explode(' ', $dateArr[4]), 'strlen');
                     if( $split['2'] == 'am' ) {
                         $split1 = array_filter(explode(':', $split['1']), 'strlen');
-                        $dateString .= ($split1[0] + 12);
+                        $dateString .= $split1[0];
                         $dateString .= ':';
                         $dateString .= $split1[1];
                         $dateString .= ':00';
                     } else {
                         $split1 = array_filter(explode(':', $split['1']), 'strlen');
-                        $dateString .= $split1[0];
+                        $dateString .= ($split1[0] + 12);
                         $dateString .= ':';
                         $dateString .= $split1[1];
                         $dateString .= ':00';
@@ -216,7 +240,7 @@ class BookingController extends Controller
                 error_log($timezone);
                 error_log($dateString);
                 $event = new Google_Service_Calendar_Event(array(
-                    'summary' => 'New Booking',
+                    'summary' => 'Booking with '.$data['customer'],
                     'description' => $description,
                     'start' => array(
                         'dateTime' => $dateString,
@@ -279,14 +303,27 @@ class BookingController extends Controller
         $dist    = rad2deg($dist);
         $miles    = $dist * 60 * 1.1515;
 
-        // Convert unit and return distance
-        $unit = strtoupper($unit);
-        if($unit == "K"){
-            return round($miles * 1.609344, 2); //.' km'
-        }elseif($unit == "M"){
-            return round($miles * 1609.344, 2); //.' meters'
-        }else{
-            return round($miles, 2); //.' miles'
-        }
+        $result = $this->GetDrivingDistance($latitudeFrom, $latitudeTo, $longitudeFrom, $longitudeTo);
+        $result = $result / 1000.0;
+        return round($result * 0.621371, 2);
+    }
+
+    function GetDrivingDistance($lat1, $lat2, $long1, $long2)
+    {
+        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=".$lat1.",".$long1."&destinations=".$lat2.",".$long2."&mode=driving&language=pl-PL&key=AIzaSyATQgdZ12KKj6Kty5bJS90dnB9BUNEYnYg";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $response_a = json_decode($response, true);
+        error_log(json_encode($response_a));
+        $dist = $response_a['rows'][0]['elements'][0]['distance']['value'];
+        $time = $response_a['rows'][0]['elements'][0]['duration']['text'];
+        return $dist;
+        //return array('distance' => $dist, 'time' => $time);
     }
 }

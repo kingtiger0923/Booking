@@ -314,12 +314,12 @@
         // Create the autocomplete object, restricting the search predictions to
         // geographical location types.
         autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('src-address'), {types: ['geocode']});
-        autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
+            document.getElementById('src-address'), {
+                types: [ "geocode", "establishment" ]
+            });
 
         autocomplete2 = new google.maps.places.Autocomplete(
-            document.getElementById('dst-address'), {types: ['geocode']});
-        autocomplete2.setFields(['address_components', 'geometry', 'icon', 'name']);
+            document.getElementById('dst-address'), {types: ["geocode", "establishment"]});
     }
     function geolocate() {
         if (navigator.geolocation) {
@@ -329,11 +329,11 @@
                 lng: position.coords.longitude
             };
             var circle = new google.maps.Circle({center: geolocation, radius: position.coords.accuracy});
-            //autocomplete.setBounds(circle.getBounds());
-            //autocomplete2.setBounds(circle.getBounds());
+            autocomplete.setBounds(circle.getBounds());
+            autocomplete2.setBounds(circle.getBounds());
             });
         }
     }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATQgdZ12KKj6Kty5bJS90dnB9BUNEYnYg&sensor=true&libraries=places&callback=initAutocomplete" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyATQgdZ12KKj6Kty5bJS90dnB9BUNEYnYg&sensor=false&libraries=places&callback=initAutocomplete&types=airport" async defer></script>
 @endsection

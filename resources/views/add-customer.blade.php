@@ -62,10 +62,10 @@
         // Create the autocomplete object, restricting the search predictions to
         // geographical location types.
         autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('home_address'), {types: ['geocode']});
+            document.getElementById('home_address'), {types: ["geocode", "establishment"]});
 
         autocomplete2 = new google.maps.places.Autocomplete(
-            document.getElementById('office_address'), {types: ['geocode']});
+            document.getElementById('office_address'), {types: ["geocode", "establishment"]});
     }
     function geolocate() {
         if (navigator.geolocation) {

@@ -14,8 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 use App\Http\Middleware\CheckLogin;
+use Illuminate\Support\Facades\DB;
+use App\Users;
 
 Route::get('/', function () {
+    $history = DB::table('sessions')->where('ip_address', '=', request()->ip())->get();
+    if(count($history)) {
+        $user = Users::where('id', $history[0]->user_id)->first();
+        session(['email' => $user->email, 'logged_in' => true, 'username' => $user->name]);
+        return redirect('/home');
+    }
     if( session()->exists('logged_in') && session('logged_in') ) {
       return redirect('/home');
     }
