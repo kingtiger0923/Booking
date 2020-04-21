@@ -13,7 +13,7 @@
 <div class="settings-panel">
   <div class="row text-center">
     <div class="col-md-12">
-        <img class="position-relative p-2 back-white" src="{{URL::to('/images')}}/Logo.png" style="margin-top: -80px; width: 204px; height: 80px;"/>
+        <span class="changeLogo"><img class="position-relative p-2 back-white" src="{{URL::to('/images')}}/Logo.png" style="margin-top: -80px; width: 204px; height: 80px;"/></span>
     </div>
   </div>
   <div class="px-4 py-2 pt-5 row">

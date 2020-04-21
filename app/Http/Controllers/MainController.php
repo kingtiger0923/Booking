@@ -57,4 +57,12 @@ class MainController extends Controller
       $data = $request->all();
       session(['timezone' => $data['timezone']]);
   }
+
+  function changeLogo(Request $request) {
+    if( $request->ajax() ) {
+        $fileName = "Logo.png";
+        unlink('images/Logo.png');
+        $request->file->move(public_path('images'), $fileName);
+    }
+  }
 }

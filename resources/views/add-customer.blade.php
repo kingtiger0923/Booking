@@ -37,13 +37,13 @@
     </div>
     <div class="row p-2 back-white">
       <div class="col-md-12">
-        <input class="wrapper border-none background-white outline-none" name="homeaddress" id="home_address" onfocus="geolocate();" placeholder="Type home address" value="<?php if(isset($customer->home_address) == true) echo $customer->home_address; ?>" required/>
+        <input class="wrapper border-none background-white outline-none" name="homeaddress" id="home_address" onfocus="geolocate();" placeholder="Type home address" value="<?php if(isset($customer->home_address) == true) echo $customer->home_address; ?>" />
         <div class="stroke-line wrapper pb-3"></div>
       </div>
     </div>
     <div class="row p-2 back-white">
       <div class="col-md-12">
-        <input class="wrapper border-none background-white outline-none" name="officeaddress" id="office_address" onfocus="geolocate();" placeholder="Type office address" value="<?php if(isset($customer->office_address) == true)  echo $customer->office_address; ?>" required/>
+        <input class="wrapper border-none background-white outline-none" name="officeaddress" id="office_address" onfocus="geolocate();" placeholder="Type office address" value="<?php if(isset($customer->office_address) == true)  echo $customer->office_address; ?>" />
         <div class="stroke-line wrapper pb-3"></div>
       </div>
     </div>

@@ -28,8 +28,8 @@ class CustomerController extends Controller
             $customer->lastname  = $lastname;
             $customer->email     = $email;
             $customer->phone     = $phone;
-            $customer->home_address = $home;
-            $customer->office_address = $office;
+            $customer->home_address = $home == "" ? "Not Specified" : $home;
+            $customer->office_address = $office == "" ? "Not Specified" : $office;
             $customer->save();
         } else {
             Customers::where('email', $email)

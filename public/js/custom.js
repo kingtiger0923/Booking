@@ -350,6 +350,31 @@ function CustomerNameChanged(obj) {
     }
 }
 
+$(".changeLogo").on("click", function() {
+    var photoEle = $(
+        '<input type="file" name="image" id="GetImage" accept="image/*"/>'
+    );
+    $(photoEle).click();
+    $(photoEle).on("change", function() {
+        var fd = new FormData();
+        var files = photoEle[0].files[0];
+        fd.append("file", files);
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            url: "/changeLogo",
+            type: "post",
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                location.reload();
+            },
+        });
+    });
+});
+
 function autocompleteCustomer(inp, arr) {
     /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/

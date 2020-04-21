@@ -62,6 +62,8 @@ Route::group(['middleware' => CheckLogin::class], function () {
   Route::post('/confirm-booking-step1', 'BookingController@confirm_booking_step1');
 
   Route::post('/save_setting', 'MainController@save_Setting');
+
+  Route::post('/changeLogo', 'MainController@changeLogo');
 });
 
 Route::post('setTimezone', 'MainController@setTimezone');
