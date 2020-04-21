@@ -9,6 +9,7 @@
 </div>
 <form method="POST" action="/customer-add">
     {{ csrf_field() }}
+    <input type="hidden" name="cus_id" value="<?php if(isset($customer->id) == true) echo $customer->id; ?>"/>
 <div class="row p-4">
   <div class="col-md-12 border-radius-10">
     <div class="row p-2 back-white">
@@ -25,7 +26,7 @@
     </div>
     <div class="row p-2 back-white">
       <div class="col-md-12">
-        <input class="wrapper border-none background-white outline-none" name="email" placeholder="Type email" value="<?php if(isset($customer->email) == true) echo $customer->email; ?>" required <?php if(isset($customer->email) == true) echo 'readonly'; ?>/>
+        <input class="wrapper border-none background-white outline-none" name="email" placeholder="Type email" value="<?php if(isset($customer->email) == true) echo $customer->email; ?>" required/>
         <div class="stroke-line wrapper pb-3"></div>
       </div>
     </div>

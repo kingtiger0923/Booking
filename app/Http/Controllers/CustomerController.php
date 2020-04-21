@@ -14,6 +14,7 @@ class CustomerController extends Controller
     function add(Request $request)
     {
         $data = $request->all();
+        $id = $data['cus_id'];
         $firstname = $data['firstname'];
         $lastname  = $data['lastname'];
         $email     = $data['email'];
@@ -21,7 +22,7 @@ class CustomerController extends Controller
         $home      = $data['homeaddress'];
         $office    = $data['officeaddress'];
 
-        $One = Customers::where('email', $email)->first();
+        $One = Customers::where('id', $id)->first();
         if( $One === null ) {
             $customer = new Customers;
             $customer->firstname = $firstname;
@@ -32,10 +33,11 @@ class CustomerController extends Controller
             $customer->office_address = $office == "" ? "Not Specified" : $office;
             $customer->save();
         } else {
-            Customers::where('email', $email)
+            Customers::where('id', $id)
                 ->update([
                     'firstname'      => $firstname,
                     'lastname'       => $lastname,
+                    'email'          => $email,
                     'phone'          => $phone,
                     'home_address'   => $home,
                     'office_address' => $office

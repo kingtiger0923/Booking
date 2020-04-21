@@ -63,6 +63,7 @@ class MainController extends Controller
         $fileName = "Logo.png";
         unlink('images/Logo.png');
         $request->file->move(public_path('images'), $fileName);
+        return "Success";
     }
   }
 }

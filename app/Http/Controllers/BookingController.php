@@ -36,8 +36,6 @@ class BookingController extends Controller
 
         $customer = Customers::where('id', $data['customer-name'])->first();
 
-        // $carbon = Carbon::parse($data['date']);
-        // error_log(json_encode($carbon));
         try{
             $dateobj = new DateTime($data['date']);
             $data['date'] = $dateobj->format('m-d-Y');
@@ -67,6 +65,17 @@ class BookingController extends Controller
             }
         }
 
+        //Create Customer
+        if ( $data['passenger-name'] != "" && $data['passenger-phone'] != "" ) {
+            $customer1 = new Customers;
+            $customer1->firstname = $data['passenger-name'];
+            $customer1->lastname  = "";
+            $customer1->email     = "Not Specified";
+            $customer1->phone     = $data['passenger-phone'];
+            $customer1->home_address = "Not Specified";
+            $customer1->office_address = "Not Specified";
+            $customer1->save();
+        }
 
         return view('booking-step1', compact('data', 'customer', 'date', 'Calc_Price'));
     }
@@ -154,9 +163,11 @@ class BookingController extends Controller
                 return "Need Auth";
             }
             try {
+                $car = Vehicles::where('id', $data['vehicle'])->first();
                 $service = new Google_Service_Calendar($this->client);
 
                 $description = "Event Description".PHP_EOL;
+                $description .= "Client Name    : ".session('username').PHP_EOL;
                 $description .= "Customer-Name  : ".$data['customer'].PHP_EOL;
                 $description .= "Customer-Email : ".$data['customer-email'].PHP_EOL;
                 $description .= "From : ".$data['src-address'].PHP_EOL;
@@ -171,6 +182,8 @@ class BookingController extends Controller
                 } else {
                     $description .= $data['manu_price'].PHP_EOL;
                 }
+
+                $description .= "Vehicle : ".$car['Type_make'].' '.$car['Type_model'].PHP_EOL;
                 $description .= "Comments:".PHP_EOL;
                 $description .= $data['comments'];
                 $dateArr = array_filter(explode(',', $data['date']), 'strlen');
@@ -237,8 +250,7 @@ class BookingController extends Controller
                 $timezone = "America/Chicago";
                 if( session()->exists('timezone') )
                     $timezone = session('timezone');
-                error_log($timezone);
-                error_log($dateString);
+
                 $event = new Google_Service_Calendar_Event(array(
                     'summary' => 'Booking with '.$data['customer'],
                     'description' => $description,
@@ -320,7 +332,6 @@ class BookingController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
         $response_a = json_decode($response, true);
-        error_log(json_encode($response_a));
         $dist = $response_a['rows'][0]['elements'][0]['distance']['value'];
         $time = $response_a['rows'][0]['elements'][0]['duration']['text'];
         return $dist;

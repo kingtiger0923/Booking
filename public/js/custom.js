@@ -342,12 +342,7 @@ function SearchForCustomers(obj) {
 }
 
 function CustomerNameChanged(obj) {
-    for (var i = 0; i < CustomerData.length; i++) {
-        var name = CustomerData[i].firstname + " " + CustomerData[i].lastname;
-        if (obj.value == name) {
-            $("#form-data-customer-name").val(CustomerData[i].id);
-        }
-    }
+    $("#form-data-customer-name").val(obj.value);
 }
 
 $(".changeLogo").on("click", function() {
@@ -414,6 +409,8 @@ function autocompleteCustomer(inp, arr) {
                 b.innerHTML += arr[i].substr(val.length);
                 /*insert a input field that will hold the current array item's value:*/
                 b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                b.innerHTML +=
+                    "<input type='hidden' value='" + CustomerData[i].id + "'>";
                 /*execute a function when someone clicks on the item value (DIV element):*/
                 b.addEventListener("click", function(e) {
                     /*insert the value for the autocomplete text field:*/
@@ -422,7 +419,7 @@ function autocompleteCustomer(inp, arr) {
               (or any other open lists of autocompleted values:*/
                     closeAllLists();
                     /* ------------------------------ */
-                    CustomerNameChanged(inp);
+                    CustomerNameChanged(this.getElementsByTagName("input")[1]);
                 });
                 a.appendChild(b);
             }
