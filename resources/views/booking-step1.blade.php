@@ -4,6 +4,7 @@
 <form method="POST" action="/confirm-booking-step1">
     {{ csrf_field() }}
     <input type="hidden" name="customer-email" value="{{$customer['email']}}" />
+    <input type="hidden" name="customer-phone" value="{{$customer['phone']}}" />
     <input type="hidden" name="duration" value="{{$data['duration']}}" />
     <input type="hidden" name="vehicle" value="{{$data['vehicle']}}" />
 <div class="row py-4">

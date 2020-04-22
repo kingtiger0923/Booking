@@ -37,7 +37,7 @@
 
 .border-radius-50 {
     border-radius: 30px;
-    background: #5290e2 !important;
+    background: #114b93 !important;
 }
 
 .border-radius-10 {
@@ -140,7 +140,7 @@
 }
 
 .color-sky {
-    color: #5290e9;
+    color: #114b93;
 }
 
 .font60 {
@@ -225,9 +225,9 @@
 }
 
 .time-cell-selected {
-    border: 1px solid #5290e9;
+    border: 1px solid #114b93;
     color: white;
-    background-color: #5290e9;
+    background-color: #114b93;
     cursor: pointer;
 }
 
@@ -237,10 +237,10 @@
 }
 
 .timetype-selected {
-    border: 1px solid #5290e9;
+    border: 1px solid #114b93;
     color: white;
     cursor: pointer;
-    background-color: #5290e9;
+    background-color: #114b93;
 }
 
 .minute-cell {
@@ -249,15 +249,15 @@
 }
 
 .minute-selected {
-    border: 1px solid #5290e9;
+    border: 1px solid #114b93;
     color: white;
     cursor: pointer;
-    background-color: #5290e9;
+    background-color: #114b93;
 }
 
 .selectable-button-selected {
-    background-color: #5290e9 !important;
-    border: #5290e9 1px solid;
+    background-color: #114b93 !important;
+    border: #114b93 1px solid;
     border-radius: 40px;
     outline: none;
     cursor: pointer;
@@ -265,15 +265,15 @@
 
 .ride-button {
     background-color: white;
-    border: #5290e9 1px solid;
+    border: #114b93 1px solid;
     border-radius: 40px;
     outline: none;
     cursor: pointer;
 }
 
 .ride-selected {
-    background-color: #5290e9 !important;
-    border: #5290e9 1px solid;
+    background-color: #114b93 !important;
+    border: #114b93 1px solid;
     border-radius: 40px;
     color: white;
     outline: none;
@@ -282,15 +282,15 @@
 
 .src-address {
     background-color: white;
-    border: #5290e9 1px solid;
+    border: #114b93 1px solid;
     border-radius: 40px;
     outline: none;
     cursor: pointer;
 }
 
 .src-address-selected {
-    background-color: #5290e9 !important;
-    border: #5290e9 1px solid;
+    background-color: #114b93 !important;
+    border: #114b93 1px solid;
     border-radius: 40px;
     color: white;
     outline: none;
@@ -299,15 +299,15 @@
 
 .dst-address {
     background-color: white;
-    border: #5290e9 1px solid;
+    border: #114b93 1px solid;
     border-radius: 40px;
     outline: none;
     cursor: pointer;
 }
 
 .dst-address-selected {
-    background-color: #5290e9 !important;
-    border: #5290e9 1px solid;
+    background-color: #114b93 !important;
+    border: #114b93 1px solid;
     border-radius: 40px;
     color: white;
     outline: none;
@@ -315,9 +315,9 @@
 }
 
 .vehicle-cell {
-    color: #5290e2;
+    color: #114b93;
     background-color: white;
-    border: 1px solid #5290e2;
+    border: 1px solid #114b93;
     padding: 5px;
     font-size: 0.8em;
     cursor: pointer;
@@ -325,13 +325,13 @@
 
 .vehicle-selected {
     color: white !important;
-    background: #5290e2 !important;
+    background: #114b93 !important;
     cursor: pointer;
 }
 
 .dateInput-selected {
     padding: 2px;
-    background-color: #5290e2;
+    background-color: #114b93;
 }
 
 
@@ -379,7 +379,7 @@
 }
 
 .back-sky {
-    background-color: #5290e9;
+    background-color: #114b93;
 }
 
 ::placeholder {
@@ -390,7 +390,7 @@
 }
 
 .calendar-day-selected {
-    background-color: #5290e9 !important;
+    background-color: #114b93 !important;
     color: white !important;
 }
 
@@ -408,7 +408,7 @@
 }
 
 .customer-field:hover {
-    background-color: #5290e9;
+    background-color: #114b93;
 }
 
 #VariationAlert {

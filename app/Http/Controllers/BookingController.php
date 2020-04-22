@@ -167,9 +167,8 @@ class BookingController extends Controller
                 $service = new Google_Service_Calendar($this->client);
 
                 $description = "Event Description".PHP_EOL;
-                $description .= "Client Name    : ".session('username').PHP_EOL;
                 $description .= "Customer-Name  : ".$data['customer'].PHP_EOL;
-                $description .= "Customer-Email : ".$data['customer-email'].PHP_EOL;
+                $description .= "Customer-Phone : ".$data['customer-phone'].PHP_EOL;
                 $description .= "From : ".$data['src-address'].PHP_EOL;
                 $description .= "   To  : ".$data['dst-address'].PHP_EOL;
                 $description .= "Date : ".$data['date'].PHP_EOL;
@@ -183,7 +182,7 @@ class BookingController extends Controller
                     $description .= $data['manu_price'].PHP_EOL;
                 }
 
-                $description .= "Vehicle : ".$car['Type_make'].' '.$car['Type_model'].PHP_EOL;
+                $description .= "Vehicle : ".$car['Type_make'].' '.$car['Type_model'].' '.$car['License_plate'].PHP_EOL;
                 $description .= "Comments:".PHP_EOL;
                 $description .= $data['comments'];
                 $dateArr = array_filter(explode(',', $data['date']), 'strlen');
